@@ -1,0 +1,1034 @@
+﻿<html>
+<head>
+
+<title>Tablas</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=320, target-densitydpi=device-dpi">
+	
+<style>
+/* ============================================
+   POKER APP - CSS MODERNO 2024
+   Optimizado: sin tablas de layout, sin código legacy
+   ============================================ */
+
+/* ========== IFRAME FIX MINIMAL ========== */
+
+/* Solo para el body del documento principal */
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Previene scroll del padre */
+}
+
+/* El iframe ocupa todo */
+iframe {
+  border: none;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+/* ---------- Variables CSS ---------- */
+:root {
+  /* Colores principales */
+  --bg-primary: #000000;
+  --bg-secondary: #121826;
+  --bg-tertiary: #1a2432;
+  --accent-gold: #ffd700;
+  --accent-gold-dark: #ffb700;
+  --text-primary: #ffffff;
+  --text-secondary: #8aa0b6;
+  --text-muted: #6b7280;
+  
+  /* Colores de acción (poker) */
+  --fold: #f87171;
+  --call: #60a5fa;
+  --3bet: #fbbf24;
+  --push: #ff0055;
+  --good: #2dd4bf;
+  --bad: #f87171;
+  --accent: #4cc9f0;
+  
+  /* Dimensiones */
+  --footer-height: 70px;
+  --border-radius: 12px;
+  --transition: all 0.3s ease;
+}
+
+/* ---------- Reset Moderno ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  font-family: 'Helvetica Neue', Arial, Helvetica, Geneva, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+  touch-action: none;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------- Layout Principal ---------- */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding-bottom: var(--footer-height);
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-gold) var(--bg-secondary);
+}
+
+.main-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: var(--accent-gold);
+  border-radius: 3px;
+}
+
+/* ---------- Tipografía ---------- */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+
+a {
+  color: var(--accent-gold);
+  text-decoration: none;
+  font-weight: bold;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+/* ---------- Header ---------- */
+.header {
+  background: linear-gradient(145deg, var(--bg-secondary), var(--bg-tertiary));
+  padding: 20px;
+  text-align: center;
+  border-bottom: 2px solid var(--accent-gold);
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.1);
+}
+
+.header-title {
+  font-size: 1.75rem;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+/* ---------- Selector de Posición ---------- */
+.position-selector {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0 30px;
+  padding: 15px;
+  background: rgba(18, 24, 38, 0.8);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  flex-wrap: wrap;
+}
+
+.pos-btn {
+  background: linear-gradient(145deg, #1a2432, #0f1620);
+  border: 2px solid transparent;
+  padding: 14px 24px;
+  border-radius: var(--border-radius);
+  color: var(--text-secondary);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+  flex: 1;
+  min-width: 100px;
+  max-width: 200px;
+}
+
+.pos-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.pos-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+}
+
+.pos-btn:hover::before {
+  left: 100%;
+}
+
+.pos-btn.active {
+  background: linear-gradient(145deg, var(--accent-gold), var(--accent-gold-dark));
+  color: #000;
+  font-weight: 800;
+  border: 2px solid #fff;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.pos-btn.active:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+}
+
+.pos-btn.locked {
+  background: linear-gradient(145deg, #2a1a1a, #1a0f0f);
+  border-color: rgba(255, 0, 0, 0.3);
+  cursor: not-allowed;
+}
+
+.pos-btn.locked::after {
+  content: "🔒";
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.pos-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
+}
+
+/* ---------- Tarjeta de Quiz ---------- */
+.quiz-card {
+  background: var(--bg-secondary);
+  border: 1px solid #2a3b52;
+  border-radius: 16px;
+  padding: 30px;
+  margin: 20px auto;
+  max-width: 600px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- Display de Manos ---------- */
+.hand-display {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--border-radius);
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.card-chip {
+  width: 60px;
+  height: 85px;
+  background: linear-gradient(145deg, #fff, #f0f0f0);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--accent-gold);
+  position: relative;
+}
+
+.card-chip b {
+  font-size: 20px;
+  color: #000;
+}
+
+.card-chip.red {
+  color: #dc2626;
+}
+
+.card-chip.black {
+  color: #000;
+}
+
+.hand-notation {
+  font-size: 1.25rem;
+  color: var(--accent-gold);
+  text-align: center;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+/* ---------- Botones de Decisión ---------- */
+.decision-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 25px 0;
+}
+
+.decision-btn {
+  padding: 18px 15px;
+  border-radius: var(--border-radius);
+  border: 2px solid;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  background: transparent;
+}
+
+.btn-fold {
+  background: rgba(248, 113, 113, 0.1);
+  border-color: var(--fold);
+  color: var(--fold);
+}
+
+.btn-call {
+  background: rgba(96, 165, 250, 0.1);
+  border-color: var(--call);
+  color: var(--call);
+}
+
+.btn-3bet {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: var(--3bet);
+  color: var(--3bet);
+}
+
+.btn-push {
+  background: rgba(255, 0, 85, 0.1);
+  border-color: var(--push);
+  color: var(--push);
+}
+
+.decision-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  filter: brightness(1.2);
+}
+
+.decision-btn:active {
+  transform: translateY(0);
+}
+
+/* ---------- Feedback ---------- */
+.feedback {
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: var(--border-radius);
+  font-size: 18px;
+  font-weight: bold;
+  display: none;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.feedback.correct {
+  background: rgba(45, 212, 191, 0.1);
+  border: 1px solid var(--good);
+  color: var(--good);
+  display: block;
+}
+
+.feedback.incorrect {
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid var(--bad);
+  color: var(--bad);
+  display: block;
+}
+
+/* ---------- Botón Siguiente ---------- */
+.next-btn {
+  padding: 16px 30px;
+  border-radius: var(--border-radius);
+  border: 2px solid var(--accent);
+  background: rgba(76, 201, 240, 0.1);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 10px auto;
+  display: none;
+  width: 180px;
+}
+
+.next-btn:hover {
+  background: rgba(76, 201, 240, 0.2);
+  transform: translateY(-2px);
+}
+
+/* ---------- Barras de Frecuencia ---------- */
+.freq-bar {
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+  margin: 12px 0 8px;
+  background: #1f2937;
+}
+
+.freq-bar div {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.freq-fold { background: var(--fold); width: 28%; }
+.freq-call { background: var(--call); width: 48%; }
+.freq-3bet { background: var(--3bet); width: 7%; }
+.freq-push { background: var(--push); width: 17%; }
+
+/* ---------- Footer / Botonera ---------- */
+.footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--footer-height);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: var(--bg-primary);
+  border-top: 2px solid var(--accent-gold);
+  padding: 0 20px;
+  box-shadow: 0 -2px 20px rgba(255, 215, 0, 0.2);
+  z-index: 100;
+}
+
+.footer-nav a,
+.footer-nav button {
+  background-color: var(--accent-gold);
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100px;
+}
+
+.footer-nav button:hover,
+.footer-nav a:hover {
+  background-color: var(--bg-primary);
+  color: var(--accent-gold);
+  border: 2px solid var(--accent-gold);
+  transform: translateY(-2px);
+}
+
+/* ---------- Modal ---------- */
+.video-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 15, 20, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.video-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background: var(--bg-secondary);
+  padding: 25px;
+  border-radius: var(--border-radius);
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  border: 1px solid #2a3b52;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  animation: modalSlideIn 0.3s ease;
+  position: relative;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+  line-height: 1;
+  background: none;
+  border: none;
+}
+
+.close-modal:hover {
+  color: var(--accent);
+}
+
+.modal-title {
+  color: var(--accent);
+  margin: 15px 0 10px;
+  font-size: 22px;
+}
+
+.modal-description {
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.video-locked {
+  padding: 25px 20px;
+  border: 2px dashed var(--accent);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  margin: 15px 0;
+}
+
+.premium-tag {
+  background: linear-gradient(45deg, var(--accent-gold), var(--accent-gold-dark));
+  color: #000;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.feature-list {
+  text-align: left;
+  margin: 20px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.feature-list li {
+  color: var(--text-secondary);
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.feature-list li:last-child {
+  border-bottom: none;
+}
+
+.feature-list li::before {
+  content: "✅";
+  color: var(--accent-gold);
+  font-size: 14px;
+}
+
+.buy-btn {
+  margin-top: 15px;
+  padding: 12px 25px;
+  background: linear-gradient(45deg, #ffd700, #ffb700);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #000;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.buy-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+}
+
+.contact-btn {
+  margin-top: 20px;
+  padding: 15px 30px;
+  background: linear-gradient(45deg, #25D366, #128C7E);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.contact-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+}
+
+.modal-divider {
+  margin: 20px 0;
+  text-align: center;
+  position: relative;
+}
+
+.modal-divider::before,
+.modal-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 45%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+}
+
+.modal-divider::before { left: 0; }
+.modal-divider::after { right: 0; }
+
+.modal-divider span {
+  background: var(--bg-secondary);
+  padding: 0 10px;
+  color: var(--accent-gold);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ---------- Dropdown Moderno ---------- */
+.dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  min-width: 200px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--accent-gold);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 50;
+  overflow: hidden;
+  animation: dropdownFade 0.2s ease;
+}
+
+@keyframes dropdownFade {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  display: block;
+  color: var(--text-primary);
+  padding: 12px 16px;
+  text-decoration: none;
+  transition: all 0.2s;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+.dropdown-content a:last-child {
+  border-bottom: none;
+}
+
+.dropdown-content a:hover {
+  color: #fff;
+  background-color: var(--accent-gold);
+  color: #000;
+}
+
+/* ---------- Botones de Grupo ---------- */
+.btn-group {
+  display: flex;
+  gap: 0;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  border: 1px solid #00a4bd;
+}
+
+.btn-group .button {
+  background-color: var(--bg-secondary);
+  border: none;
+  color: var(--text-primary);
+  padding: 15px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-right: 1px solid rgba(0, 164, 189, 0.3);
+  font-weight: 600;
+}
+
+.btn-group .button:last-child {
+  border-right: none;
+}
+
+.btn-group .button:hover {
+  background-color: #00a4bd;
+  color: #fff;
+}
+
+.btn-group .button.active {
+  background-color: #00a4bd;
+  color: #fff;
+}
+
+/* ---------- Utilidades ---------- */
+.img-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.img-button:hover {
+  transform: translateY(-2px);
+}
+
+.img-button:active {
+  transform: translateY(0);
+}
+
+.img-button img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.text-center { text-align: center; }
+.text-gold { color: var(--accent-gold); }
+.mb-20 { margin-bottom: 20px; }
+.mt-20 { margin-top: 20px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .decision-buttons {
+    grid-template-columns: 1fr;
+  }
+  
+  .position-selector {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .pos-btn {
+    width: 100%;
+    max-width: none;
+  }
+  
+  .hand-display {
+    gap: 10px;
+  }
+  
+  .card-chip {
+    width: 50px;
+    height: 70px;
+  }
+  
+  .card-chip b {
+    font-size: 16px;
+  }
+  
+  .quiz-card {
+    padding: 20px;
+    margin: 10px;
+  }
+  
+  .header-title {
+    font-size: 1.5rem;
+  }
+  
+  .footer-nav a,
+  .footer-nav button {
+    padding: 8px 15px;
+    font-size: 14px;
+    min-width: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 10px;
+  }
+  
+  .decision-btn {
+    padding: 15px 10px;
+    font-size: 15px;
+  }
+  
+  .modal-content {
+    padding: 20px 15px;
+  }
+}
+
+/* ---------- Animaciones ---------- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+/* ---------- Legacy: Solo si necesitas compatibilidad con email ---------- */
+@media only screen and (max-width: 660px) {
+  .email-table { width: 100% !important; }
+  .email-hide { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- SELECTOR DE POSICIÓN MEJORADO -->
+<div class="container">
+    <div class="header">
+
+
+        <div class="position-selector">
+            <!-- Botón ATAQUE - GRATIS -->
+            <button class="pos-btn active" onclick="window.open('visor-ataque.html', '_blank')">
+                <span>⚔️ ATAQUE (OR)</span>
+            </button>
+            
+            <!-- Botón DEFENSA - BLOQUEADO -->
+            <button class="pos-btn locked" onclick="showContactModal('defensa')">
+                <span>🛡️ DEFENSA (BB)</span>
+            </button>
+            
+            <!-- Botón CONTRAATAQUE - BLOQUEADO -->
+            <button class="pos-btn locked" onclick="showContactModal('contraataque')">
+                <span>⚡ CONTRAATAQUE (3Bet)</span>
+            </button>
+        </div>
+
+       
+<p>
+<iframe id="T"
+    title="Mil888"
+    height="0"
+    scrolling="no"
+    src="Mil888.html">
+</iframe>
+</p>
+
+<p>
+<iframe id="T"
+    title="Mil8"
+    width="470"
+    height="495"
+    scrolling="no"
+    src="torneos2.html#2">
+</iframe>
+</p>
+
+ <div class="footer-nav">
+  <a href="https://intellipoker.github.io/leopoker/bio.html">
+    <button>Inicio</button>
+  </a>
+  <a href="https://intellipoker.github.io/leopoker/index.html">
+    <button>Visor</button>
+  </a>
+  <a href="https://intellipoker.github.io/leopoker/carta11aa.html">
+    <button>Curso!</button>
+  </a>
+</div>
+
+<!-- MODAL DE CONTACTO MEJORADO -->
+<div class="video-modal" id="contactModal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeContactModal()">&times;</span>
+        
+        <div class="premium-tag" id="modalActionType">⚡ ACCIÓN PREMIUM</div>
+        
+        <h2 id="modalMainTitle" style="color: #ffd700; margin: 10px 0;">🎯 Modo Defensa Avanzado</h2>
+        
+        <p id="modalMainDescription" style="color: #8aa0b6; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
+            Domina las defensas desde la ciega grande con rangos GTO optimizados
+        </p>
+
+        <div class="video-locked" style="border: 2px solid #ffd700;">
+            <p style="color: #fff; font-size: 18px; margin-bottom: 15px;">
+                <strong>📊 Lo que obtendrás:</strong>
+            </p>
+            
+            <ul class="feature-list">
+                <li>Rangos completos de defensa por stack size</li>
+                <li>Estrategias avanzadas de 3Bet vs Robos</li>
+                <li>Tablas de frecuencias óptimas (GTO)</li>
+                <li>Guías de ajustes vs jugadores específicos</li>
+                <li>Acceso a todos los escenarios de defensa</li>
+            </ul>
+
+            <div class="modal-divider">
+                <span>Contáctame ahora</span>
+            </div>
+
+            <p style="color: #8aa0b6; font-size: 14px; margin: 15px 0;">
+                ⚡ Desbloquea el acceso completo al módulo de <strong id="modalActionName">DEFENSA</strong><br>
+                y mejora tu juego significativamente.
+            </p>
+
+            <!-- Botón de WhatsApp -->
+            <button class="contact-btn" onclick="window.open('https://wa.me/1234567890?text=¡Hola!%20Quiero%20acceder%20al%20módulo%20de%20' + encodeURIComponent(document.getElementById('modalActionName').textContent) + '%20del%20Visor%20de%20Rangos', '_blank')">
+                <span>📱</span>
+                Contactar por WhatsApp
+                <span style="font-size: 14px;">→</span>
+            </button>
+
+            <p style="color: #4a5f73; font-size: 12px; margin-top: 15px;">
+                🔒 Respuesta rápida - Máximo 2 horas
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+// Variables para el modal
+const contactModal = document.getElementById("contactModal");
+const modalMainTitle = document.getElementById("modalMainTitle");
+const modalMainDescription = document.getElementById("modalMainDescription");
+const modalActionName = document.getElementById("modalActionName");
+const modalActionType = document.getElementById("modalActionType");
+
+function showContactModal(action) {
+    console.log("Mostrando modal para:", action); // Para debug
+    
+    const modalConfig = {
+        'defensa': {
+            title: '🛡️ Modo Defensa (BB)',
+            description: 'Aprende a defender tu BB con rangos GTO optimizados contra cualquier robo',
+            actionName: 'DEFENSA',
+            type: '🛡️ ACCIÓN PREMIUM'
+        },
+        'contraataque': {
+            title: '⚡ Modo Contraataque (3Bet)',
+            description: 'Estrategias avanzadas de 3Bet por posición y stack size. Aprende cuándo y cómo contraatacar.',
+            actionName: 'CONTRAATAQUE',
+            type: '⚡ ACCIÓN PREMIUM'
+        }
+    };
+
+    const config = modalConfig[action];
+    
+    if (config) {
+        modalMainTitle.textContent = config.title;
+        modalMainDescription.textContent = config.description;
+        modalActionName.textContent = config.actionName;
+        modalActionType.textContent = config.type;
+        
+        contactModal.classList.add("active");
+    }
+}
+
+function closeContactModal() {
+    contactModal.classList.remove("active");
+}
+
+// Cerrar modal al hacer click fuera
+contactModal.addEventListener("click", function(e) {
+    if (e.target === contactModal) {
+        closeContactModal();
+    }
+});
+
+// Cerrar con tecla ESC
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") {
+        closeContactModal();
+    }
+});
+</script>
+
+</body>
+</html>
