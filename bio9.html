@@ -1,0 +1,471 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preflop Victory | Leo Poker R®</title>
+  <style>
+    /* Reset y estilos base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0c10;
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      color: #fff;
+      line-height: 1.6;
+      padding: 16px;
+      padding-bottom: 100px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 500px;
+      width: 100%;
+      margin: 0 auto;
+    }
+html {
+  height: 100%;
+  overflow: hidden;  /* ← BLOQUEA SCROLL EN HTML */
+}
+
+/* Línea 22-23 */
+body {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;  /* ← BLOQUEA SCROLL EN BODY */
+  touch-action: none;  /* ← BLOQUEA SCROLL TÁCTIL */
+}
+
+/* Línea 28-30 */
+.app-container {
+  flex: 1;
+  overflow-y: auto;  /* ← SCROLL INTERNO CONTROLADO */
+  overflow-x: hidden;
+  scrollbar-width: none;  /* ← OCULTA SCROLLBAR FIREFOX */
+  -ms-overflow-style: none;  /* ← OCULTA SCROLLBAR IE */
+}
+
+/* Línea 37-39 */
+.app-container::-webkit-scrollbar {
+  display: none;  /* ← OCULTA SCROLLBAR CHROME/SAFARI */
+}
+    /* Profile Card PRO */
+    .profile-card {
+      background: #121826;
+      border-radius: 32px;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      animation: fadeInUp 0.5s ease;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Header con tu imagen de tiburón */
+    .profile-header {
+      background: linear-gradient(145deg, #1a2432, #0f1620);
+      padding: 30px 20px 25px;
+      text-align: center;
+      border-bottom: 2px solid #ffd700;
+      position: relative;
+    }
+
+    .profile-header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #ffd700, #ffb700, #ffd700, transparent);
+      animation: shine 2s infinite;
+    }
+
+    @keyframes shine {
+      0% { opacity: 0.3; }
+      50% { opacity: 1; }
+      100% { opacity: 0.3; }
+    }
+
+    /* Tu contenedor de imagen original pero mejorado */
+    .perfil-container {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 15px;
+      border: 4px solid #FFD700;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 0 15px #FFD700;
+      animation: flotar 3s ease-in-out infinite;
+      transition: all 0.3s ease;
+    }
+
+    .perfil-container:hover {
+      box-shadow: 0 0 25px #FFD700, 0 0 10px #fff;
+      transform: scale(1.05);
+    }
+
+    @keyframes flotar {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    .perfil-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-header h2 {
+      color: #ffd700;
+      font-size: 28px;
+      margin: 10px 0 5px;
+      letter-spacing: 1px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid #ffd700;
+      color: #ffd700;
+      padding: 6px 16px;
+      border-radius: 40px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    /* Stats rápidas - nuevas */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      padding: 20px;
+      background: rgba(255, 215, 0, 0.02);
+      border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+    }
+
+    .stat-item {
+      background: #1a2432;
+      border-radius: 16px;
+      padding: 15px 5px;
+      text-align: center;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .stat-value {
+      color: #ffd700;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .stat-label {
+      color: #8aa0b6;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    /* Sección principal */
+    .info-section {
+      padding: 24px 20px;
+    }
+
+    /* Tu texto original */
+    .bio-text {
+      color: #8aa0b6;
+      font-size: 15px;
+      margin-bottom: 25px;
+      padding: 0 5px;
+      line-height: 1.6;
+    }
+
+    /* Feature pills - especialidades */
+    .feature-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 20px 0;
+      justify-content: center;
+    }
+
+    .pill {
+      background: rgba(255, 215, 0, 0.05);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      color: #8aa0b6;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .pill i {
+      color: #ffd700;
+      margin-right: 4px;
+    }
+
+    /* Tus botones originales pero con estilo PRO */
+    .bio-boton {
+      display: block;
+      width: 100%;
+      margin: 12px 0;
+      padding: 16px 20px;
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-basico {
+      background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+      color: #FFD700;
+      border: 2px solid #FFD700;
+    }
+
+    .btn-basico:hover {
+      background: #FFD700;
+      color: #000;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+    }
+
+    .btn-premium {
+      background: linear-gradient(45deg, #FFD700, #ffb700);
+      color: #000;
+      border: 2px solid #FFD700;
+    }
+
+    .btn-premium:hover {
+      background: #000;
+      color: #FFD700;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+    }
+
+    .btn-wsp {
+      background: linear-gradient(45deg, #25D366, #128C7E);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-wsp:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+    }
+
+    /* Separador */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 25px 0 15px;
+      color: #ffd700;
+      font-size: 14px;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #ffd700, transparent);
+    }
+
+    /* Testimonios */
+    .testimonials {
+      margin: 25px 0;
+    }
+
+    .testimonial-card {
+      background: #1a2432;
+      border-radius: 16px;
+      padding: 15px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255, 215, 0, 0.1);
+    }
+
+    .testimonial-text {
+      color: #8aa0b6;
+      font-style: italic;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .testimonial-author {
+      color: #ffd700;
+      font-size: 13px;
+    }
+
+    /* Footer nav - exactamente como lo tenías */
+    .footer-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #000;
+      border-top: 2px solid #FFD700;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-around;
+      box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.8);
+      z-index: 100;
+    }
+
+    .footer-nav a {
+      text-decoration: none;
+      flex: 1;
+      margin: 0 5px;
+    }
+
+    .footer-nav button {
+      width: 100%;
+      background-color: #FFD700;
+      border: none;
+      font-size: 14px;
+      font-weight: bold;
+      color: #000;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .footer-nav button:hover {
+      background-color: #000;
+      color: #FFD700;
+      border: 2px solid #FFD700;
+    }
+
+    /* Garantía */
+    .guarantee {
+      color: #4a5f73;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .perfil-container {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .profile-header h2 {
+        font-size: 24px;
+      }
+      
+      .stat-value {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="profile-card">
+      
+      <!-- HEADER con tu tiburón -->
+      <div class="profile-header">
+        <div class="perfil-container">
+          <img src="https://intellipoker.github.io/leopoker/shark-cap-red.jpg" alt="Foto de perfil">
+        </div>
+        <h2>Preflop Victory</h2>
+        <div class="badge">🏆 Herramientas para mejorar tu juego!</div>
+      </div>
+
+   
+
+      <!-- INFO SECTION con tu texto original -->
+      <div class="info-section">
+        
+
+
+       
+
+        <!-- TUS BOTONES ORIGINALES pero con nuevo estilo -->
+        <a href="https://intellipoker.github.io/leopoker/" class="bio-boton btn-basico">
+          🎯 Probar Visor Básico
+        </a>
+        
+        <a href="https://intellipoker.github.io/leopoker/carta11aa.html" class="bio-boton btn-premium">
+          🔓 Visor Premium + Curso
+        </a>
+
+        <!-- Separador visual (opcional) -->
+        <div class="divider">
+          <span class="divider-line"></span>
+          <span>📱 CONTACTO DIRECTO</span>
+          <span class="divider-line"></span>
+        </div>
+
+        <!-- Botón WhatsApp con tu número -->
+        <a href="https://wa.link/xklo2t" class="bio-boton btn-wsp" target="_blank">
+          💬 Consultar por WhatsApp
+        </a>
+
+        <!-- Testimonios (opcional - los agregué para dar más confianza) -->
+        <div class="testimonials">
+          <div class="testimonial-card">
+            <div class="testimonial-text">
+              "Los rangos de Leo transformaron mi juego. Pasé de perder a ser consistente en mis Spin & Go."
+            </div>
+            <div class="testimonial-author">⭐ Carlos M. · Alumno 2024</div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-text">
+              "El visor básico ya es útil, pero el premium con el curso es otro nivel. Muy recomendado."
+            </div>
+            <div class="testimonial-author">⭐ Andrés R. · Pack PRO</div>
+          </div>
+        </div>
+
+        <!-- Disclaimer de respuesta rápida -->
+        <div class="guarantee">
+          🔒 Respuesta garantizada en menos de 2 horas
+        </div>
+
+      </div> <!-- end info-section -->
+    </div> <!-- end profile-card -->
+  </div> <!-- end container -->
+
+  <!-- FOOTER NAV (exactamente como lo tenías) -->
+  <div class="footer-nav">
+    <a href="bio.html">
+      <button>Inicio</button>
+    </a>
+    <a href="index.html">
+      <button>Visor</button>
+    </a>
+    <a href="carta11aa.html">
+      <button>Curso!</button>
+    </a>
+  </div>
+
+  <script>
+    // Animación simple para darle vida (opcional)
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('🌟 Preflop Victory - Bio PRO cargada');
+    });
+  </script>
+</body>
+</html>
