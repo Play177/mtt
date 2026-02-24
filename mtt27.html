@@ -450,9 +450,20 @@
     body {
       margin: 0;
       font-family: sans-serif;
-      padding-bottom: 70px; /* espacio para la botonera */
-      background-color: #000; /* fondo negro */
+      background-color: #000;
       color: #fff;
+      height: 100vh;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    /* Ocultar scrollbar en todos los navegadores */
+    body::-webkit-scrollbar {
+      display: none;
+    }
+    body {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
 
 </style>
@@ -814,11 +825,7 @@
 <!-- SELECTOR DE POSICIÓN MEJORADO -->
 <div class="container">
     <div class="header">
-        <!-- Mini Guía Rápida - Es solo informativa, no hace nada al hacer clic -->
-        <div style="text-align: center; margin-bottom: 20px; padding: 15px; background: rgba(18, 24, 38, 0.6); border-radius: 12px; border-left: 4px solid #ffd700;">
-            <p style="color: #ffd700; font-size: 14px; margin: 0 0 5px 0; text-transform: uppercase; letter-spacing: 2px;">🎯 Mini Guía Rápida</p>
-            <p style="color: #8aa0b6; font-size: 16px; margin: 0; font-style: italic;">¿Estás atacando, defendiendo o contraatacando?</p>
-        </div>
+
 
         <div class="position-selector">
             <!-- Botón ATAQUE - GRATIS -->
@@ -837,24 +844,7 @@
             </button>
         </div>
 
-        <!-- Descripción rápida - También es solo informativa -->
-        <div style="display: flex; justify-content: center; gap: 20px; margin-top: 15px; flex-wrap: wrap;">
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="color: #ffd700;">⚔️</span>
-                <span style="color: #8aa0b6; font-size: 13px;">Ataque: Tú eres el primero en hablar</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="color: #ffd700;">🛡️</span>
-                <span style="color: #8aa0b6; font-size: 13px;">Defensa: Respondes desde BB</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <span style="color: #ffd700;">⚡</span>
-                <span style="color: #8aa0b6; font-size: 13px;">Contraataque: Resubes (3Bet)</span>
-            </div>
-        </div>
-    </div>
-</div>
-
+       
 <p>
 <iframe id="T"
     title="Mil888"
